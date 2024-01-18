@@ -17,6 +17,7 @@ export default function WordModel() {
       try {
         const data = await getWordOfTheDay();
         setWord(data);
+        console.log(data);
       } catch (error) {
         console.error('Error fetching word of the day:', error);
       }

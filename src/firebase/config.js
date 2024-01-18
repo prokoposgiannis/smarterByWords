@@ -23,47 +23,6 @@ const firebaseConfig = {
   measurementId: 'G-KZCHD7R28T',
 };
 
-const app = initializeApp(firebaseConfig);
-const db = getFirestore(app);
-
-const addCardToFirestore = (
-  category,
-  question,
-  answer,
-  isLoved = false,
-  key,
-  cardNumber
-) => {
-  const docRef = collection(db, 'cards');
-
-  setDoc(doc(docRef), {
-    category,
-    question,
-    answer,
-    isLoved,
-    key,
-    cardNumber,
-  });
-};
-
-// const getWordOfTheDay = () => {
-//   const wordQuery = query(
-//     collection(db, 'words'),
-//     where('wordNumber', '==', 1)
-//   );
-
-//   getDocs(wordQuery)
-//     .then((snapshot) => {
-//       snapshot.forEach((doc) => {
-//         let word = doc.data();
-//         return word;
-//       });
-//     })
-//     .catch((error) => {
-//       console.log('Error getting articles:\n', error);
-//     });
-// };
-
 const setWordIndex = async () => {
   try {
     const wordQuery = query(collection(db, 'wordOfTheDay'));
@@ -112,7 +71,7 @@ const setWordIndex = async () => {
 
 const getWordOfTheDay = async () => {
   try {
-    const wrdNmb = await setWordIndex();
+    // const wrdNmb = await setWordIndex();
     const wordQuery = query(
       collection(db, 'words'),
       where('wordNumber', '==', 0)
@@ -133,35 +92,56 @@ const getWordOfTheDay = async () => {
   }
 };
 
-const deleteCardToFirestore = (id) => {
-  const docRef = doc(db, 'cards', id);
+// const app = initializeApp(firebaseConfig);
+// const db = getFirestore(app);
 
-  deleteDoc(docRef)
-    .then(() => {
-      console.log('Document has been deleted successfully.');
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-};
+// const addCardToFirestore = (
+//   category,
+//   question,
+//   answer,
+//   isLoved = false,
+//   key,
+//   cardNumber
+// ) => {
+//   const docRef = collection(db, 'cards');
 
-const loveCardToFirestore = (id, newBooleanValue) => {
-  const docRef = doc(db, 'cards', id);
+//   setDoc(doc(docRef), {
+//     category,
+//     question,
+//     answer,
+//     isLoved,
+//     key,
+//     cardNumber,
+//   });
+// };
+// const deleteCardToFirestore = (id) => {
+//   const docRef = doc(db, 'cards', id);
 
-  updateDoc(docRef, {
-    isLoved: newBooleanValue,
-  })
-    .then(() => {
-      console.log('Love state has been updated successfully.');
-    })
-    .catch((error) => {
-      console.log(error);
-    });
-};
+//   deleteDoc(docRef)
+//   .then(() => {
+//     console.log('Document has been deleted successfully.');
+//     })
+//     .catch((error) => {
+//       console.log(error);
+//     });
+// };
+
+// const loveCardToFirestore = (id, newBooleanValue) => {
+//   const docRef = doc(db, 'cards', id);
+
+//   updateDoc(docRef, {
+//     isLoved: newBooleanValue,
+//   })
+//     .then(() => {
+//       console.log('Love state has been updated successfully.');
+//     })
+//     .catch((error) => {
+//       console.log(error);
+//     });
+// };
 
 export {
   db,
-  addCardToFirestore,
   collection,
   getDoc,
   getDocs,
@@ -170,7 +150,6 @@ export {
   setDoc,
   deleteDoc,
   deleteCardToFirestore,
-  loveCardToFirestore,
   query,
   where,
   getWordOfTheDay,
