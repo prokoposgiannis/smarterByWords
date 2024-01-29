@@ -1,5 +1,5 @@
-import React from 'react';
-import '../../App.css';
+import React from "react";
+import "../../App.css";
 
 export default function WordView({ wordData }) {
   return (
@@ -14,7 +14,7 @@ export default function WordView({ wordData }) {
           {wordData.definition} <br />
         </h1>
         <a
-          href={`${wordData.link}`}
+          href={`${wordData.source}`}
           target='_blank'
           rel='noopener noreferrer'
           className='my-link '

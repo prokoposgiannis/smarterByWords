@@ -5,43 +5,50 @@ admin.initializeApp();
 const firestore = admin.firestore();
 
 exports.scheduledFunction = functions.pubsub
-  .schedule("0 0 * * *")
-  .timeZone("UTC")
-  .onRun(async (context) => {
-    try {
-      const collectionName = "wordOfTheDay";
-      const documentId = "Sdl6JoLY0ihvtgagMlhY";
+    .schedule("0 0 * * *")
+    .timeZone("UTC")
+    .onRun(async () => {
+      try {
+        const collectionName = "wordOfTheDay";
+        const documentId = "Sdl6JoLY0ihvtgagMlhY";
 
-      const currentWordRef = firestore
-        .collection(collectionName)
-        .doc(documentId);
-      const currentWord = await currentWordRef.get();
+        const currentWordRef = firestore
+            .collection(collectionName)
+            .doc(documentId);
+        const currentWord = await currentWordRef.get();
 
-      if (currentWord.exists) {
-        const currentWordNum = currentWord.data().wordNum;
+        if (currentWord.exists) {
+          const currentWordNum = currentWord.data().wordNum;
 
-        const nextWordQuerySnapshot = await firestore
-          .collection("words")
-          .where("wordNum", "==", currentWordNum + 1)
-          .get();
+          const wordsCollectionRef = firestore.collection("words");
+          const wordsCollectionSnapshot = await wordsCollectionRef.get();
+          const numberOfDocuments = wordsCollectionSnapshot.size;
 
-        if (!nextWordQuerySnapshot.empty) {
-          const nextWordData = nextWordQuerySnapshot.docs[0].data();
+          const wordNumber =
+          currentWordNum >= numberOfDocuments ? 0 : currentWordNum + 1;
 
-          const nextWord = {
-            word: nextWordData.word,
-            definition: nextWordData.definition,
-            source: nextWordData.source,
-            wordNum: nextWordData.wordNum,
-          };
+          const nextWordQuerySnapshot = await firestore
+              .collection("words")
+              .where("wordNum", "==", wordNumber)
+              .get();
 
-          await currentWordRef.update(nextWord);
+          if (!nextWordQuerySnapshot.empty) {
+            const nextWordData = nextWordQuerySnapshot.docs[0].data();
+
+            const nextWord = {
+              word: nextWordData.word,
+              definition: nextWordData.definition,
+              source: nextWordData.source,
+              wordNum: nextWordData.wordNum,
+            };
+
+            await currentWordRef.update(nextWord);
+          }
         }
-      }
 
-      return null;
-    } catch (error) {
-      console.error("Error:", error);
-      return null;
-    }
-  });
+        return null;
+      } catch (error) {
+        console.error("Error:", error);
+        return null;
+      }
+    });
