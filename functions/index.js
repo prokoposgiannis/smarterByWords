@@ -5,13 +5,13 @@ const logger = require("firebase-functions/logger");
 const imageCreation = require("./createImage");
 const imageUpload = require("./postToInstagram");
 require("dotenv").config();
-const path = require("path");
+// const path = require("path");
 
 admin.initializeApp();
 // const firestore = admin.firestore();
 
 exports.scheduledFunction = functions.pubsub
-    .schedule("* * * * *")
+    .schedule("0 0 * * *")
     .timeZone("UTC")
     .onRun(async () => {
       try {
@@ -33,11 +33,13 @@ exports.scheduledFunction = functions.pubsub
           const finalImage = await imageCreation.createImage(imageBuffer);
           logger.log("Image created!");
           // Prefix 'thumb_' to file name.
-          const finalFilePath = path.join(path.dirname(filePath), "final");
+          const finalFilePath =
+          "https://firebasestorage.googleapis.com/v0/b/smarter-by-words.appspot.com/o/finalImage.jpg?alt=media&token=152f0698-0bfb-42d8-8c37-be97847addfb";
+          // path.join(path.dirname(filePath), "final");
 
           // Upload the thumbnail.
-          const metadata = {contentType: contentType};
-          await bucket.file(filePath).save(finalImage, {
+          const metadata = {contentType: "image/jpg"};
+          await bucket.file("finalImage.jpg").save(finalImage, {
             metadata: metadata,
           });
           logger.log("Thumbnail uploaded!");
