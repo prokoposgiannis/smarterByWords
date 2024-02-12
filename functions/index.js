@@ -20,7 +20,7 @@ const firestore = admin.firestore();
   4) Using the the final image's url on Firebase Storage, it uploads it to Instagram.
 */
 exports.scheduledFunction = functions.pubsub
-  .schedule("* * * * *")
+  .schedule("0 0 * * *")
   .timeZone("UTC")
   .onRun(async () => {
     // constants (will be moved to another file)
@@ -120,4 +120,3 @@ exports.scheduledFunction = functions.pubsub
       return null;
     }
   });
-``;
