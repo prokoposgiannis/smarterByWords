@@ -1,6 +1,6 @@
 const {createCanvas, loadImage} = require("canvas");
 
-module.exports.createImage = async function(photo) {
+module.exports.createImage = async function(photo, word, definition) {
   const canvas = createCanvas(1080, 1920);
   const context = canvas.getContext("2d");
 
@@ -10,7 +10,7 @@ module.exports.createImage = async function(photo) {
 
   // Set up the title properties
   const titleFont = "bold 130px Helvetica";
-  const titleText = "Ορεσίβιος";
+  const titleText = `${word}`;
   context.font = titleFont;
   context.fillStyle = "#141316";
   context.textAlign = "center";
@@ -23,8 +23,7 @@ module.exports.createImage = async function(photo) {
 
   // Set up the paragraph properties
   const paragraphFont = "50px Helvetica";
-  const paragraphText =
-    "λόγιο διαχρονικό δάνειο από τη μεσαιωνική ελληνική ὀρεσίβιος ή από την ελληνιστική κοινή [1] (o Ευστάθιος Θεσσαλονίκης το αποδίδει στον Αρριανό, συγγραφέα του 1ου αιώνα κε)[2] Ο γνωστός ελληνιστικός τύπος είναι ὀρέσβιος. Η μορφή ὀρεσίβιος, πιθανόν κατά το αρχαίο ὀρεσίτροφος[1] < ὀρεσι- + -βιος (< βίος), κυριολεκτικά, «αυτός που ζει στα βουνά». Συγχρονικά αναλύεται σε ορεσί- + -βιος";
+  const paragraphText = `${definition}`;
 
   // Function to wrap text to fit within a specified width
   function wrapText(text, x, y, maxWidth) {
